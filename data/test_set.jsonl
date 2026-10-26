@@ -1,0 +1,30 @@
+{"id": "INV-001", "text": "Invoice #INV-001 dated 2026-10-01. Total: EGP 3,500.00.", "expected": {"invoice_number": "INV-001", "date": "2026-10-01", "total_amount": 3500.0, "currency": "EGP"}}
+{"id": "INV-002", "text": "فاتورة رقم 001042 بتاريخ 2026-10-02، الإجمالي 350 جنيه مصري.", "expected": {"invoice_number": "001042", "date": "2026-10-02", "total_amount": 350.0, "currency": "EGP"}}
+{"id": "INV-003", "text": "Invoice no. 0000789 | Date: 03/10/2026 | Amount USD 1,250.50", "expected": {"invoice_number": "0000789", "date": "2026-10-03", "total_amount": 1250.5, "currency": "USD"}}
+{"id": "INV-004", "text": "فاتورة رقم ٤٥٦٧ بتاريخ ٢٠٢٦/١٠/٠٤ الإجمالي ٧٥٠٫٥٠ جنيه مصري", "expected": {"invoice_number": "4567", "date": "2026-10-04", "total_amount": 750.5, "currency": "EGP"}}
+{"id": "INV-005", "text": "Invoice 0099. Total amount: €89.90. Issued on October 5, 2026.", "expected": {"invoice_number": "0099", "date": "2026-10-05", "total_amount": 89.9, "currency": "EUR"}}
+{"id": "INV-006", "text": "فاتورة رقم ٧٧٠، المبلغ الإجمالي ١٢٠٠ ريال.", "expected": {"invoice_number": "770", "date": null, "total_amount": 1200.0, "currency": null}}
+{"id": "INV-007", "text": "Invoice number A-0007. Date 2026-10-07. Total 42.00 GBP.", "expected": {"invoice_number": "A-0007", "date": "2026-10-07", "total_amount": 42.0, "currency": "GBP"}}
+{"id": "INV-008", "text": "فاتورة رقم 0008 بتاريخ 8 أكتوبر 2026، الإجمالي ٥٠٠ جنيه مصري.", "expected": {"invoice_number": "0008", "date": "2026-10-08", "total_amount": 500.0, "currency": "EGP"}}
+{"id": "INV-009", "text": "Invoice #INV-09 issued 2026-10-09. Total: 1,000.00 JPY.", "expected": {"invoice_number": "INV-09", "date": "2026-10-09", "total_amount": 1000.0, "currency": "JPY"}}
+{"id": "INV-010", "text": "فاتورة رقم ١٠٠١ بتاريخ 10-10-2026، الإجمالي ٢٬٣٥٠٫٧٥ درهم إماراتي.", "expected": {"invoice_number": "1001", "date": "2026-10-10", "total_amount": 2350.75, "currency": "AED"}}
+{"id": "INV-011", "text": "Invoice No: 000011; date not shown; total $19.99 USD.", "expected": {"invoice_number": "000011", "date": null, "total_amount": 19.99, "currency": "USD"}}
+{"id": "INV-012", "text": "فاتورة رقم 12 بتاريخ 2026-10-12، المبلغ 800 دينار.", "expected": {"invoice_number": "12", "date": "2026-10-12", "total_amount": 800.0, "currency": null}}
+{"id": "INV-013", "text": "Invoice 00013 — 12 Oct 2026 — Total CAD 2,000.", "expected": {"invoice_number": "00013", "date": "2026-10-12", "total_amount": 2000.0, "currency": "CAD"}}
+{"id": "INV-014", "text": "فاتورة رقم ٠٠١٤ بتاريخ ١٤/١٠/٢٠٢٦ الإجمالي ١٥٠٠ ريال سعودي.", "expected": {"invoice_number": "0014", "date": "2026-10-14", "total_amount": 1500.0, "currency": "SAR"}}
+{"id": "INV-015", "text": "Invoice #15. Date: 2026-10-15. Total amount: 75.25 with no currency stated.", "expected": {"invoice_number": "15", "date": "2026-10-15", "total_amount": 75.25, "currency": null}}
+{"id": "INV-016", "text": "فاتورة رقم ١٦ بتاريخ ٢٠٢٦-١٠-١٦، الإجمالي ٩٩٫٩٩ دولار أمريكي.", "expected": {"invoice_number": "16", "date": "2026-10-16", "total_amount": 99.99, "currency": "USD"}}
+{"id": "INV-017", "text": "Invoice ref 000017, issued 17/10/2026. Amount: 1,234.56 EUR.", "expected": {"invoice_number": "000017", "date": "2026-10-17", "total_amount": 1234.56, "currency": "EUR"}}
+{"id": "INV-018", "text": "فاتورة رقم ١٨، التاريخ غير مذكور، الإجمالي ٤٥٠ جنيه.", "expected": {"invoice_number": "18", "date": null, "total_amount": 450.0, "currency": "EGP"}}
+{"id": "INV-019", "text": "Invoice #000019 dated 2026-10-19. Total: 0.00 USD.", "expected": {"invoice_number": "000019", "date": "2026-10-19", "total_amount": 0.0, "currency": "USD"}}
+{"id": "INV-020", "text": "فاتورة رقم ٢٠ بتاريخ ٢٠ أكتوبر ٢٠٢٦، الإجمالي ٢٥٠٠ دينار كويتي.", "expected": {"invoice_number": "20", "date": "2026-10-20", "total_amount": 2500.0, "currency": "KWD"}}
+{"id": "INV-021", "text": "Invoice number X00021, date 2026/10/21, total 3,400.00 INR.", "expected": {"invoice_number": "X00021", "date": "2026-10-21", "total_amount": 3400.0, "currency": "INR"}}
+{"id": "INV-022", "text": "فاتورة رقم ٠٠٢٢ بتاريخ ٢٢-١٠-٢٠٢٦، المبلغ ٦٧٥ جنيه مصري.", "expected": {"invoice_number": "0022", "date": "2026-10-22", "total_amount": 675.0, "currency": "EGP"}}
+{"id": "INV-023", "text": "Invoice 000023 dated 23 October 2026; total 55.50 AUD.", "expected": {"invoice_number": "000023", "date": "2026-10-23", "total_amount": 55.5, "currency": "AUD"}}
+{"id": "INV-024", "text": "فاتورة رقم ٢٤ بتاريخ ٢٠٢٦/١٠/٢٤، الإجمالي ٩٠٠ دينار أردني.", "expected": {"invoice_number": "24", "date": "2026-10-24", "total_amount": 900.0, "currency": "JOD"}}
+{"id": "INV-025", "text": "Invoice no 000025. Total amount 2,500. Date: 25.10.2026. Currency is not stated.", "expected": {"invoice_number": "000025", "date": "2026-10-25", "total_amount": 2500.0, "currency": null}}
+{"id": "INV-026", "text": "فاتورة رقم ٢٦ بتاريخ ٢٦ أكتوبر ٢٠٢٦، الإجمالي ١٢٠٠ ريال (لا توجد دولة مذكورة).", "expected": {"invoice_number": "26", "date": "2026-10-26", "total_amount": 1200.0, "currency": null}}
+{"id": "INV-027", "text": "Invoice #000027 dated 2026-10-27. Grand total: CHF 80.00.", "expected": {"invoice_number": "000027", "date": "2026-10-27", "total_amount": 80.0, "currency": "CHF"}}
+{"id": "INV-028", "text": "فاتورة رقم ٢٨ بتاريخ ٢٨/١٠/٢٠٢٦، الإجمالي ٣٠٠ دينار تونسي.", "expected": {"invoice_number": "28", "date": "2026-10-28", "total_amount": 300.0, "currency": "TND"}}
+{"id": "INV-029", "text": "Invoice no. 000029, dated 2026-10-29. Total is 1 500,25 EUR.", "expected": {"invoice_number": "000029", "date": "2026-10-29", "total_amount": 1500.25, "currency": "EUR"}}
+{"id": "INV-030", "text": "فاتورة رقم ٠٠٣٠ بتاريخ ٣٠-١٠-٢٠٢٦، المبلغ الإجمالي ١٠٠٠ ليرة تركية.", "expected": {"invoice_number": "0030", "date": "2026-10-30", "total_amount": 1000.0, "currency": "TRY"}}

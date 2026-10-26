@@ -1,0 +1,135 @@
+from __future__ import annotations
+
+import json
+import os
+import threading
+from abc import ABC, abstractmethod
+from dataclasses import dataclass
+from typing import Any
+
+from extractor.models import Invoice
+
+
+@dataclass
+class ProviderResponse:
+    raw_text: str
+    total_tokens: int | None = None
+    thinking_tokens: int | None = None
+
+
+class Provider(ABC):
+    """Provider contract. Implementations return raw JSON/text; extract() validates it."""
+
+    name: str
+    model: str
+
+    @abstractmethod
+    def generate(self, prompt: str, *, schema_enforced: bool) -> ProviderResponse:
+        raise NotImplementedError
+
+
+# Keep all Ollama work serialized across provider instances in this process.
+_OLLAMA_LOCK = threading.Lock()
+
+
+class OllamaProvider(Provider):
+    def __init__(self, model: str, host: str | None = None, timeout_seconds: float = 60.0):
+        self.name = "ollama"
+        self.model = model
+        self.timeout_seconds = timeout_seconds
+        self.host = host or os.getenv("OLLAMA_HOST", "http://localhost:11434")
+        try:
+            import ollama
+        except ImportError as exc:
+            raise RuntimeError("Install the Ollama Python client: pip install ollama") from exc
+        self._client = ollama.Client(host=self.host, timeout=timeout_seconds)
+
+    def generate(self, prompt: str, *, schema_enforced: bool) -> ProviderResponse:
+        kwargs: dict[str, Any] = {
+            "model": self.model,
+            "messages": [{"role": "user", "content": prompt}],
+            "options": {"temperature": 0},
+        }
+        if schema_enforced:
+            kwargs["format"] = Invoice.model_json_schema()
+        # prompt_only intentionally has no format constraint.
+        with _OLLAMA_LOCK:
+            response = self._client.chat(**kwargs)
+        message = getattr(response, "message", None)
+        raw = getattr(message, "content", None)
+        if raw is None and isinstance(response, dict):
+            raw = response.get("message", {}).get("content", "")
+        return ProviderResponse(
+            raw_text=raw or "",
+            total_tokens=_to_int(_get(response, "eval_count")),
+            thinking_tokens=None,  # Ollama client/server does not expose a consistent thinking-token count.
+        )
+
+
+class GeminiProvider(Provider):
+    def __init__(
+        self,
+        model: str | None = None,
+        thinking_level: str | None = None,
+        timeout_seconds: float = 60.0,
+    ):
+        self.name = "gemini"
+        self.model = model or os.getenv("GEMINI_MODEL", "gemini-2.5-flash-lite")
+        self.thinking_level = (thinking_level or os.getenv("GEMINI_THINKING_LEVEL", "minimal")).lower()
+        self.timeout_seconds = timeout_seconds
+        api_key = os.getenv("GEMINI_API_KEY")
+        if not api_key:
+            raise RuntimeError("GEMINI_API_KEY is required in the environment; no key is read from files or source code.")
+        try:
+            from google import genai
+            from google.genai import types
+        except ImportError as exc:
+            raise RuntimeError("Install the official SDK: pip install google-genai") from exc
+        self._types = types
+        self._client = genai.Client(
+            api_key=api_key,
+            http_options=types.HttpOptions(timeout=int(timeout_seconds * 1000)),
+        )
+
+    def generate(self, prompt: str, *, schema_enforced: bool) -> ProviderResponse:
+        types = self._types
+        kwargs: dict[str, Any] = {"temperature": 0}
+        if schema_enforced:
+            kwargs["response_mime_type"] = "application/json"
+            kwargs["response_json_schema"] = Invoice.model_json_schema()
+
+        # Gemini 3 uses thinking_level; Gemini 2.5 uses thinking_budget.
+        if self.model.startswith("gemini-3"):
+            level = self.thinking_level if self.thinking_level in {"minimal", "low", "medium", "high"} else "minimal"
+            kwargs["thinking_config"] = types.ThinkingConfig(thinking_level=level)
+        elif self.model.startswith(("gemini-2.5", "gemini-2.0")):
+            # Zero is the minimum thinking budget supported by models that allow disabling it.
+            kwargs["thinking_config"] = types.ThinkingConfig(thinking_budget=0)
+        config = types.GenerateContentConfig(**kwargs)
+        response = self._client.models.generate_content(
+            model=self.model,
+            contents=prompt,
+            config=config,
+        )
+        raw = getattr(response, "text", None) or ""
+        usage = getattr(response, "usage_metadata", None)
+        return ProviderResponse(
+            raw_text=raw,
+            total_tokens=_to_int(_get(usage, "total_token_count")),
+            thinking_tokens=_to_int(_get(usage, "thoughts_token_count")),
+        )
+
+
+def _get(obj: Any, key: str) -> Any:
+    if obj is None:
+        return None
+    if isinstance(obj, dict):
+        return obj.get(key)
+    return getattr(obj, key, None)
+
+
+def _to_int(value: Any) -> int | None:
+    try:
+        return int(value) if value is not None else None
+    except (TypeError, ValueError):
+        return None
